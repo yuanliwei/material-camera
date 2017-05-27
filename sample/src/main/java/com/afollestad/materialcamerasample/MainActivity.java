@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .allowRetry(true)
                 .defaultToFrontFacing(true)
                 .allowRetry(true)
+                .videoPreferredAspect(4/3f)
                 .autoSubmit(false)
                 .labelConfirm(R.string.mcam_use_video);
 

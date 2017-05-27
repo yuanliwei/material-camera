@@ -3,6 +3,7 @@ package com.afollestad.materialcamera.internal;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.hardware.Camera;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -247,6 +249,13 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             createPreview();
             mMediaRecorder = new MediaRecorder();
 
+            WindowManager mgr = getActivity().getWindowManager();
+            int o = mgr.getDefaultDisplay().getOrientation();
+            if (o == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                mPreviewView.setAspectRatio(previewSize.height, previewSize.width);
+            } else {
+                mPreviewView.setAspectRatio(previewSize.width, previewSize.height);
+            }
             onCameraOpened();
         } catch (IllegalStateException e) {
             throwError(new Exception("Cannot access the camera.", e));
@@ -307,7 +316,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         if (mPreviewFrame.getChildCount() > 0 && mPreviewFrame.getChildAt(0) instanceof CameraPreview)
             mPreviewFrame.removeViewAt(0);
         mPreviewFrame.addView(mPreviewView, 0);
-        mPreviewView.setAspectRatio(mWindowSize.x, mWindowSize.y);
+        ((RelativeLayout.LayoutParams) mPreviewView.getLayoutParams()).addRule(RelativeLayout.CENTER_IN_PARENT);
     }
 
     @Override
