@@ -79,15 +79,20 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
         outState.putLong("recording_start", mRecordingStart);
         outState.putLong("recording_end", mRecordingEnd);
         outState.putLong(CameraIntentKey.LENGTH_LIMIT, mLengthLimit);
+
         if (mFrontCameraId instanceof String) {
             outState.putString("front_camera_id_str", (String) mFrontCameraId);
-            outState.putString("back_camera_id_str", (String) mBackCameraId);
-        } else {
-            if (mFrontCameraId != null)
-                outState.putInt("front_camera_id_int", (Integer) mFrontCameraId);
-            if (mBackCameraId != null)
-                outState.putInt("back_camera_id_int", (Integer) mBackCameraId);
         }
+        if (mFrontCameraId instanceof Integer) {
+            outState.putInt("front_camera_id_int", (Integer) mFrontCameraId);
+        }
+        if (mBackCameraId instanceof String) {
+            outState.putString("back_camera_id_str", (String) mBackCameraId);
+        }
+        if (mBackCameraId instanceof Integer) {
+            outState.putInt("back_camera_id_int", (Integer) mBackCameraId);
+        }
+
         outState.putInt("flash_mode", mFlashMode);
     }
 
@@ -134,13 +139,23 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
             mRecordingStart = savedInstanceState.getLong("recording_start", -1);
             mRecordingEnd = savedInstanceState.getLong("recording_end", -1);
             mLengthLimit = savedInstanceState.getLong(CameraIntentKey.LENGTH_LIMIT, -1);
+
             if (savedInstanceState.containsKey("front_camera_id_str")) {
                 mFrontCameraId = savedInstanceState.getString("front_camera_id_str");
+            }
+
+            if (savedInstanceState.containsKey("back_camera_id_str")) {
                 mBackCameraId = savedInstanceState.getString("back_camera_id_str");
-            } else {
+            }
+
+            if (savedInstanceState.containsKey("front_camera_id_int")){
                 mFrontCameraId = savedInstanceState.getInt("front_camera_id_int");
+            }
+
+            if (savedInstanceState.containsKey("back_camera_id_int")){
                 mBackCameraId = savedInstanceState.getInt("back_camera_id_int");
             }
+
             mFlashMode = savedInstanceState.getInt("flash_mode");
         }
 

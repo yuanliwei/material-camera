@@ -349,9 +349,13 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
             startCounter();
         }
 
-        final int orientation = Degrees.getActivityOrientation(getActivity());
-        //noinspection ResourceType
-        getActivity().setRequestedOrientation(orientation);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+        } else {
+            final int orientation = Degrees.getActivityOrientation(getActivity());
+            //noinspection ResourceType
+            getActivity().setRequestedOrientation(orientation);
+        }
         mInterface.setDidRecord(true);
         return true;
     }
